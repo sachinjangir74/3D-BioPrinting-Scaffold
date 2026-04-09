@@ -262,7 +262,8 @@ const BioprintingAnimation = () => {
                 null,
                 {
                   frame: { duration: 120, redraw: true },
-                  fromcurrent: true,
+                  fromcurrent: false, // CHANGED: forced false to restart animation every click
+                  transition: { duration: 0 }, // CHANGED: fix frame ghosting
                 },
               ],
             },
@@ -274,6 +275,7 @@ const BioprintingAnimation = () => {
                 {
                   frame: { duration: 0, redraw: false },
                   mode: 'immediate',
+                  transition: { duration: 0 } // CHANGED: prevent interpolation bugs
                 },
               ],
             },
@@ -290,6 +292,7 @@ const BioprintingAnimation = () => {
               {
                 frame: { duration: 0, redraw: true },
                 mode: 'immediate',
+                transition: { duration: 0 } // CHANGED: fix scrubbing lag
               },
             ],
             label: String(k + 1),
@@ -350,6 +353,7 @@ const BioprintingAnimation = () => {
         >
           <div className="w-full h-[600px] md:h-[700px]">
             <Plot
+              key={shape} // CHANGED: Forces full unmount and Plotly.purge cleanup on switch
               data={initData}
               layout={layout}
               frames={frames}
